@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Models;
+using static Utilities.NetworkUtils;
 
 namespace OrderService.Controllers
 {
@@ -12,11 +13,18 @@ namespace OrderService.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+
+        private IHttpContextAccessor _httpContextAccessor;
+        public OrdersController(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
         // GET: api/Orders
         [HttpGet]
-        public IEnumerable<Order> Get()
+        public Tuple<IEnumerable<Order>, string> Get()
         {
-            return new Order[] {
+            return new Tuple<IEnumerable<Order>, string>(new Order[] {
                 new Order{
                     id = Guid.NewGuid().ToString(),
                     customer_id = "rchandra-4a4f-d6a11bea",
@@ -30,7 +38,8 @@ namespace OrderService.Controllers
                     },
                     total = 449.90
                 }
-            };
+            }, $"Called from: {GetRequestInfo(_httpContextAccessor)} " +
+            $" | Handled by machine: {Environment.MachineName}, IP: [{GetIPs()}], OS: {Environment.OSVersion}");
         }
 
         // GET: api/Orders/5
@@ -46,16 +55,6 @@ namespace OrderService.Controllers
         {
         }
 
-        // PUT: api/Orders/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
