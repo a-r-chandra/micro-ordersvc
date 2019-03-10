@@ -34,6 +34,12 @@ namespace OrderService.Controllers
                             product_title = "Learning Continuous Integration with Jenkins",
                             product_price = 44.99,
                             product_quantity = 10
+                        },
+                        new ProductInfo{
+                            product_id = "978-1717075901",
+                            product_title = "Microservices: A Practical Guide",
+                            product_price = 36.90,
+                            product_quantity = 1
                         }
                     },
                     total = 449.90
